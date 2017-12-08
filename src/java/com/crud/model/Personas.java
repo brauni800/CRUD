@@ -8,14 +8,14 @@ public class Personas {
     public Personas() {
     }
 
-    public Personas(int edad, String nombre, String telefono, String correo) {
+    public Personas(String nombre, String telefono, String correo, int edad) {
         this.edad = edad;
         this.nombre = nombre;
         this.telefono = telefono;
         this.correo = correo;
     }
 
-    public Personas(int id, int edad, String nombre, String telefono, String correo) {
+    public Personas(int id, String nombre, String telefono, String correo, int edad) {
         this.id = id;
         this.edad = edad;
         this.nombre = nombre;
