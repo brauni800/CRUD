@@ -41,7 +41,7 @@ public class EditController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView form(@ModelAttribute("usuarios") Personas u, BindingResult result, SessionStatus status, HttpServletRequest request) {
+    public ModelAndView form(@ModelAttribute("personas") Personas u, BindingResult result, SessionStatus status, HttpServletRequest request) {
         this.personasValidaciones.validate(u, result);
         if (result.hasErrors()) {
             ModelAndView mav = new ModelAndView();
@@ -53,26 +53,28 @@ public class EditController {
         } else {
             int id = Integer.parseInt(request.getParameter("id"));
             this.jdbcTemplate.update(
-                    "update usuarios "
+                    "update persona "
                     + "set nombre=?,"
-                    + " correo=?,"
-                    + "telefono=? "
+                    + "telefono=?,"
+                    + "correo=?, "
+                    + "edad=? "
                     + "where "
-                    + "id=? ",
-                    u.getNombre(), u.getCorreo(), u.getTelefono(), id);
+                    + " id=? ",
+                    u.getNombre(),u.getTelefono(), u.getCorreo(), u.getEdad(), id);
             return new ModelAndView("redirect:/home.htm");
         }
     }
 
     public Personas selectPersona(int id) {
         final Personas user = new Personas();
-        String quer = "SELECT * FROM usuarios WHERE id='" + id + "'";
+        String quer = "SELECT * FROM persona WHERE id='" + id + "'";
         return (Personas) jdbcTemplate.query(quer, new ResultSetExtractor<Personas>() {
             public Personas extractData(ResultSet rs) throws SQLException, DataAccessException {
                 if (rs.next()) {
                     user.setNombre(rs.getString("nombre"));
-                    user.setCorreo(rs.getString("correo"));
                     user.setTelefono(rs.getString("telefono"));
+                    user.setCorreo(rs.getString("correo"));
+                    user.setEdad(rs.getInt("edad"));
                 }
                 return user;
             }
